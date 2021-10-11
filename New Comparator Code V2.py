@@ -139,13 +139,14 @@ norm_mat = substitution_matrix()
 conservation_threshold = 0.7
 
 protein_List = ["ABCG1","ABCA1","ABCG5","ABCG8"]
+tag = "_Fasta_Mammalia"
 primary_dir = os.getcwd()
 
 #============================================
 #=====================================================================
 def consensus(protein,MSA):
 	print(f"Determining consensus sequence for {protein}.")
-	file = f"{protein}_Fasta_Mammalia"
+	file = f"{protein}{tag}"
 
 	consensus = AlignInfo.SummaryInfo(MSA).dumb_consensus(ambiguous='-',require_multiple = 1)
 	consensus_record = SeqRecord.SeqRecord(consensus, id=f'{file}_Consensus Sequence')
@@ -155,7 +156,7 @@ def consensus(protein,MSA):
 for protein in protein_List:
 	os.chdir(primary_dir)
 
-	file = f"{protein}_Fasta_Mammalia"
+	file = f"{protein}{tag}"
 	path = rf'{protein}_data'
 
 	try:
@@ -206,7 +207,7 @@ for protein in protein_List:
 
 	consensus_conserved = ''.join(consensus_conserved)
 	print(consensus_conserved)
-	consensus_name = f'{protein}_Fasta_Mammalia_Consensus_CONSERVED_at_{conservation_threshold}_Sequence'
+	consensus_name = f'{protein}{tag}_Consensus_CONSERVED_at_{conservation_threshold}_Sequence'
 	consensus_conserved_record = SeqRecord.SeqRecord(Seq(consensus_conserved), id=consensus_name)
 	SeqIO.write(consensus_conserved_record, consensus_name+'.fasta', "fasta")
 
@@ -242,7 +243,7 @@ def comparison_MSA(protein_pair):
 	for i in range(2):
 		os.chdir(primary_dir)
 		path = f'{protein_pair[i]}_data'
-		consensus_file = f'{protein_pair[i]}_Fasta_Mammalia_Consensus_CONSERVED_at_{conservation_threshold}_Sequence'
+		consensus_file = f'{protein_pair[i]}{tag}_Consensus_CONSERVED_at_{conservation_threshold}_Sequence'
 
 		os.chdir(path)
 
